@@ -7,7 +7,7 @@ from torch import optim
 import torch.nn.functional as F
 
 # %% Local imports
-from src.data import train_unbalanced_dl, train_balanced_dl
+from src.data import train_imbalanced_dl, train_balanced_dl
 from src.architectures import model_original, model_improved, model_relu, model_mish
 from src.init import modern_init_, original_init_
 from src.procedures import train_and_gather_stats
@@ -45,7 +45,7 @@ if __name__ == "__main__":
         OPTIMIZER_FX,
         OPTIMIZER_PARAMS,
         DEVICE,
-        train_unbalanced_dl,
+        train_imbalanced_dl,
     )
 
     print(" ")
@@ -145,7 +145,7 @@ if __name__ == "__main__":
         OPTIMIZER_FX,
         OPTIMIZER_PARAMS,
         DEVICE,
-        train_unbalanced_dl,
+        train_imbalanced_dl,
     )
 
     print(" ")

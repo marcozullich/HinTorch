@@ -34,7 +34,7 @@ del x_all
 x_symmetric: Tensor = th.tensor(x_symmetric, dtype=th.float32)
 x_non_symmetric: Tensor = th.tensor(x_non_symmetric, dtype=th.float32)
 
-# The unbalanced dataset tensor...
+# The imbalanced dataset tensor...
 x: Tensor = th.cat((x_non_symmetric, x_symmetric), dim=0)
 y: Tensor = th.tensor([[is_symmetric(sub_x)] for sub_x in x])
 
@@ -47,12 +47,12 @@ y_balanced: Tensor = th.tensor([[is_symmetric(sub_x)] for sub_x in x_balanced])
 del balancing_ratio
 
 # Derived datasets...
-train_unbalanced_ds: TensorDataset = TensorDataset(x, y)
+train_imbalanced_ds: TensorDataset = TensorDataset(x, y)
 train_balanced_ds: TensorDataset = TensorDataset(x_balanced, y_balanced)
 
 # ...and Dataloaders (we do full-dataset-batching as in the paper)
-train_unbalanced_dl: DataLoader = DataLoader(
-    train_unbalanced_ds, batch_size=len(train_unbalanced_ds), shuffle=True
+train_imbalanced_dl: DataLoader = DataLoader(
+    train_imbalanced_ds, batch_size=len(train_imbalanced_ds), shuffle=True
 )
 train_balanced_dl: DataLoader = DataLoader(
     train_balanced_ds, batch_size=len(train_balanced_ds), shuffle=True
