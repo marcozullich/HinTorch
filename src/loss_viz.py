@@ -14,7 +14,7 @@ https://olaralex.com/visualizing-the-loss-landscape/
 
 def init_model(
     model:torch.nn.Module,
-    deltas:Collection[torch.Tensor, torch.Tensor],
+    deltas:Collection[torch.Tensor],
     alpha:float,
     beta:float,
     device:Union[torch.device, str]
@@ -22,7 +22,7 @@ def init_model(
     with torch.no_grad():
         for param, delta in zip(model.parameters(), deltas):
             param.add_(delta[0], alpha=alpha).add_(delta[1], alpha=beta)
-            param.add_(beta, torch.randn_like(param, device=device))
+            # param.add_(beta, torch.randn_like(param, device=device))
 
 
 def init_directions(
@@ -32,7 +32,7 @@ def init_directions(
     model.to(device)
     deltas = []
     for param in model.parameters():
-        delta = torch.randn([2] + list(param.shape), device=device)
+        delta = torch.randn([2] + list(param.shape), device=device) * 2
         # calculate norms and pack them into a tensor of the same shape as delta
         delta_norms = delta.view(2, -1).norm(dim=1, keepdim=True)
         delta_norms = delta_norms.view(2, *([1] * (len(param.shape)))).expand_as(delta)
@@ -79,7 +79,7 @@ def plot_viz(
 ):
     meshgrid_x = torch.linspace(-1, 1, resolution)
     meshgrid_y = torch.linspace(-1, 1, resolution)
-    meshgrid_x, meshgrid_y = torch.meshgrid(meshgrid_x, meshgrid_y)
+    meshgrid_x, meshgrid_y = torch.meshgrid(meshgrid_x, meshgrid_y, indexing="ij")
     loss_values = compute_loss_landscape(model, dataloader, loss, meshgrid_x, meshgrid_y, resolution, device)
     plt.figure(figsize=(10, 10))
     plt.title("Loss landscape")
